@@ -1,8 +1,3 @@
--- ============================================================
---  CampusConnect (Omegle-style text chat) - MySQL 8 schema
---  Run this file once:  mysql -u root -p < database/schema.sql
---  Safe to re-run: tables are only created if missing.
--- ============================================================
 
 CREATE DATABASE IF NOT EXISTS campusconnect
     CHARACTER SET utf8mb4
@@ -10,10 +5,6 @@ CREATE DATABASE IF NOT EXISTS campusconnect
 
 USE campusconnect;
 
--- ------------------------------------------------------------
--- USERS: one row per registered account
--- Constraints: PRIMARY KEY, UNIQUE, NOT NULL, CHECK
--- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
     id            INT AUTO_INCREMENT PRIMARY KEY,
     username      VARCHAR(30)  NOT NULL UNIQUE,
@@ -23,11 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
     CONSTRAINT chk_username_length CHECK (CHAR_LENGTH(username) >= 3)
 ) ENGINE=InnoDB;
 
--- ------------------------------------------------------------
--- WAITING_QUEUE: users currently looking for a stranger.
--- last_seen is refreshed by the browser every ~1.5s, so rows of
--- users who closed the tab become "stale" and are ignored.
--- ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS waiting_queue (
     user_id   INT       PRIMARY KEY,
     joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -37,11 +24,7 @@ CREATE TABLE IF NOT EXISTS waiting_queue (
     INDEX idx_queue_joined (joined_at)
 ) ENGINE=InnoDB;
 
--- ------------------------------------------------------------
--- ROOMS: one private chat session between two matched users
--- (No ON DELETE actions on user1/user2 because they are used
---  inside a CHECK constraint, which MySQL does not allow.)
--- ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS rooms (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     user1_id   INT NOT NULL,
@@ -58,9 +41,6 @@ CREATE TABLE IF NOT EXISTS rooms (
     INDEX idx_rooms_user2_status (user2_id, status)
 ) ENGINE=InnoDB;
 
--- ------------------------------------------------------------
--- MESSAGES: every chat message belongs to a room and a sender
--- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS messages (
     id        INT AUTO_INCREMENT PRIMARY KEY,
     room_id   INT          NOT NULL,
@@ -73,10 +53,7 @@ CREATE TABLE IF NOT EXISTS messages (
     INDEX idx_messages_room_id (room_id, id)
 ) ENGINE=InnoDB;
 
--- ------------------------------------------------------------
--- VIEW: messages joined with the sender's username (JOIN)
--- The Java backend reads messages through this view.
--- ------------------------------------------------------------
+
 CREATE OR REPLACE VIEW message_details AS
 SELECT m.id,
        m.room_id,
@@ -87,9 +64,7 @@ SELECT m.id,
 FROM messages m
 JOIN users u ON u.id = m.sender_id;
 
--- ------------------------------------------------------------
--- VIEW: quick numbers for the dashboard (aggregates + subqueries)
--- ------------------------------------------------------------
+
 CREATE OR REPLACE VIEW chat_stats AS
 SELECT
     (SELECT COUNT(*) FROM users)                                   AS total_users,
