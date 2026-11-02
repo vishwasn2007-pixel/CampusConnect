@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Talk to someone new</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main>
+
+    <!-- ===================== LOG IN / NEW USER ===================== -->
+    <section id="auth-screen" class="window w-auth">
+        <div class="titlebar">
+            <div class="tb-left">
+                <svg viewBox="0 0 36 32" width="22" height="19" aria-hidden="true" shape-rendering="crispEdges">
+                    <rect x="2" y="2" width="32" height="22" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="5" y="5" width="26" height="16" fill="#000080"></rect>
+                    <rect x="8" y="8" width="13" height="6" fill="#FFFFFF"></rect>
+                    <rect x="15" y="13" width="13" height="6" fill="#FFFF00"></rect>
+                    <rect x="13" y="24" width="10" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="8" y="27" width="20" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                </svg>
+                <span id="auth-title">CampusConnect - Log in</span>
+            </div>
+            <div class="tb-controls" aria-hidden="true"><span>_</span><span>&#9633;</span><span>X</span></div>
+        </div>
+
+        <div class="win-body">
+            <div class="ticker-box">
+                <span class="ticker">Welcome to CampusConnect!!!  Press one button, meet a random student, say hi.  Be nice and leave whenever you like.</span>
+            </div>
+
+            <div class="auth-grid">
+                <div class="panel sunken">
+                    <div class="wordart">CampusConnect</div>
+                    <h1>Talk to someone you haven't met yet.</h1>
+                    <p class="lead">Log in, press one button, and you're paired with another student for a text chat. It's free. No downloads.</p>
+
+                    <div class="rule"></div>
+
+                    <div class="demo" aria-hidden="true">
+                        <div><b class="who them">stranger:</b> hey, anyone there?</div>
+                        <div><b class="who me">you:</b> hi! which year are you in?</div>
+                    </div>
+
+                    <div class="counter-row">
+                        <span>Students registered:</span>
+                        <span id="counter" class="counter" aria-label="Number of registered students"></span>
+                    </div>
+                </div>
+
+                <div class="auth-side">
+                    <div class="tabs">
+                        <button type="button" class="tab active" data-tab="login">Log in</button>
+                        <button type="button" class="tab" data-tab="register">New user <span class="blink new">NEW!</span></button>
+                    </div>
+
+                    <fieldset class="groupbox">
+                        <legend id="auth-legend">Member login</legend>
+
+                        <div id="auth-error" class="alert hidden" role="alert"></div>
+
+                        <form id="login-form" novalidate>
+                            <label for="login-identifier">Username or email:</label>
+                            <input id="login-identifier" class="field" type="text" autocomplete="username" required>
+
+                            <label for="login-password">Password:</label>
+                            <input id="login-password" class="field" type="password" autocomplete="current-password" required>
+
+                            <div class="center">
+                                <button type="submit" class="btn default">Log in</button>
+                            </div>
+                        </form>
+
+                        <form id="register-form" class="hidden" novalidate>
+                            <label for="reg-username">Username:</label>
+                            <input id="reg-username" class="field" type="text" maxlength="30" autocomplete="username"
+                                   placeholder="Letters, numbers, underscore" required>
+
+                            <label for="reg-email">Email:</label>
+                            <input id="reg-email" class="field" type="email" maxlength="100" autocomplete="email" required>
+
+                            <label for="reg-password">Password:</label>
+                            <input id="reg-password" class="field" type="password" minlength="6" autocomplete="new-password"
+                                   placeholder="At least 6 characters" required>
+
+                            <div class="center">
+                                <button type="submit" class="btn default">Create account</button>
+                            </div>
+                        </form>
+                    </fieldset>
+
+                    <p class="side-note">
+                        <span id="note-login">First time here? Click <a href="#" id="to-register">New user</a> to make an account.</span>
+                        <span id="note-register" class="hidden">Already have an account? Click <a href="#" id="to-login">Log in</a>.</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="statusbar">
+                <span class="stat-active">0 chatting now</span>
+                <span class="stat-waiting">0 waiting</span>
+                <span class="wide">Please be nice to each other.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== HOME ===================== -->
+    <section id="idle-screen" class="window w-home hidden">
+        <div class="titlebar">
+            <div class="tb-left">
+                <svg viewBox="0 0 36 32" width="22" height="19" aria-hidden="true" shape-rendering="crispEdges">
+                    <rect x="2" y="2" width="32" height="22" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="5" y="5" width="26" height="16" fill="#000080"></rect>
+                    <rect x="8" y="8" width="13" height="6" fill="#FFFFFF"></rect>
+                    <rect x="15" y="13" width="13" height="6" fill="#FFFF00"></rect>
+                    <rect x="13" y="24" width="10" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="8" y="27" width="20" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                </svg>
+                <span>CampusConnect - Home</span>
+            </div>
+            <div class="tb-controls" aria-hidden="true"><span>_</span><span>&#9633;</span><span>X</span></div>
+        </div>
+
+        <div class="menubar">
+            <span>Signed in as <b class="user-name"></b></span>
+            <a href="#" class="logout-link">Log out</a>
+        </div>
+
+        <div class="win-body">
+            <div class="panel sunken center-text">
+                <h1 class="navy">Welcome back, <span id="idle-name"></span>!</h1>
+                <p class="lead centered">Press the button and we'll pair you with the next person who's looking.</p>
+
+                <button id="find-btn" class="btn default big" type="button">Find someone to chat with</button>
+
+                <div class="note-box">
+                    <b>Good to know:</b>
+                    <ul>
+                        <li>Your username is shown to the person you're matched with.</li>
+                        <li>Only the two of you can see what you write.</li>
+                        <li>Press Next person at any time to skip.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="statusbar">
+                <span class="stat-active">0 chatting now</span>
+                <span class="stat-waiting">0 waiting</span>
+                <span class="stat-total">0 registered</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SEARCHING ===================== -->
+    <section id="searching-screen" class="window w-search hidden">
+        <div class="titlebar">
+            <div class="tb-left">
+                <svg viewBox="0 0 36 32" width="22" height="19" aria-hidden="true" shape-rendering="crispEdges">
+                    <rect x="2" y="2" width="32" height="22" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="5" y="5" width="26" height="16" fill="#000080"></rect>
+                    <rect x="8" y="8" width="13" height="6" fill="#FFFFFF"></rect>
+                    <rect x="15" y="13" width="13" height="6" fill="#FFFF00"></rect>
+                    <rect x="13" y="24" width="10" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="8" y="27" width="20" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                </svg>
+                <span>Please wait...</span>
+            </div>
+            <div class="tb-controls" aria-hidden="true"><span>X</span></div>
+        </div>
+
+        <div class="menubar">
+            <span>Signed in as <b class="user-name"></b></span>
+            <a href="#" class="logout-link">Log out</a>
+        </div>
+
+        <div class="win-body">
+            <div class="panel sunken center-text">
+                <h1 class="navy small-h">Searching for another user...</h1>
+
+                <div class="progress" aria-hidden="true"><div class="march"></div></div>
+
+                <p id="search-timer" class="timer">Waiting 0s</p>
+                <p class="hint">Testing on your own? Open a private window and log in as a second user.</p>
+
+                <button id="cancel-btn" class="btn default" type="button">Cancel</button>
+            </div>
+
+            <div class="statusbar">
+                <span>Looking for a match</span>
+                <span class="stat-waiting">0 waiting</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== CHAT ===================== -->
+    <section id="chat-screen" class="window w-chat hidden">
+        <div class="titlebar">
+            <div class="tb-left">
+                <svg viewBox="0 0 36 32" width="22" height="19" aria-hidden="true" shape-rendering="crispEdges">
+                    <rect x="2" y="2" width="32" height="22" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="5" y="5" width="26" height="16" fill="#000080"></rect>
+                    <rect x="8" y="8" width="13" height="6" fill="#FFFFFF"></rect>
+                    <rect x="15" y="13" width="13" height="6" fill="#FFFF00"></rect>
+                    <rect x="13" y="24" width="10" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                    <rect x="8" y="27" width="20" height="3" fill="#C0C0C0" stroke="#000000"></rect>
+                </svg>
+                <span id="chat-title-text">Chat</span>
+            </div>
+            <div class="tb-controls" aria-hidden="true"><span>_</span><span>&#9633;</span><span>X</span></div>
+        </div>
+
+        <div class="menubar">
+            <span>Signed in as <b class="user-name"></b></span>
+            <a href="#" class="logout-link">Log out</a>
+        </div>
+
+        <div class="win-body">
+            <div class="chat-bar">
+                <div class="chat-title">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>Chatting with <b id="partner-name"></b></span>
+                </div>
+                <div class="chat-actions">
+                    <button id="next-btn" class="btn default" type="button">Next person</button>
+                    <button id="stop-btn" class="btn" type="button">Leave chat</button>
+                </div>
+            </div>
+
+            <div id="messages" class="messages sunken" aria-live="polite"></div>
+
+            <form id="message-form" class="composer" autocomplete="off">
+                <label for="message-input" class="sr-only">Message</label>
+                <input id="message-input" class="field" type="text" maxlength="500" placeholder="Write a message" required>
+                <button id="send-btn" class="btn default" type="submit">Send</button>
+            </form>
+
+            <div class="statusbar">
+                <span id="chat-status" class="wide">Connected</span>
+                <span id="msg-count">0 messages</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
